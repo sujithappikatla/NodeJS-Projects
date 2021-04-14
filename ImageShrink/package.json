@@ -1,0 +1,16 @@
+{
+  "name": "imageshrink",
+  "version": "1.0.0",
+  "description": "Shrink image file sizes",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev":"nodemon --exec electron ."
+  },
+  "author": "Sujith Kumar Appikatla",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^12.0.4",
+    "nodemon": "^2.0.7"
+  }
+}
