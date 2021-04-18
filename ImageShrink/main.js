@@ -1,4 +1,11 @@
-const {app, BrowserWindow, Menu, globalShortcut} = require('electron')
+const path = require('path')
+const os = require('os')
+var fs = require('fs');
+const {app, BrowserWindow, Menu, ipcMain, shell} = require('electron')
+const imagemin = require('imagemin')
+const imageminMozjpeg = require('imagemin-mozjpeg')
+const imageminPngquant = require('imagemin-pngquant')
+
 
 process.env.NODE_ENV = 'development'
 // process.env.NODE_ENV = 'production'
@@ -89,6 +96,38 @@ const menu = [
         }
     ] : []),
 ]
+
+ipcMain.on('image:Minimize', (e, options) => {
+    options.dest = path.join(os.homedir(), 'imageshrink')
+    options.dest = options.dest.replace(/\\/g, '/')
+    options.imgPath = options.imgPath.replace(/\\/g, '/')
+    if (!fs.existsSync(options.dest)){
+        fs.mkdirSync(options.dest);
+    }
+    shrinkImage(options);
+})
+
+async function shrinkImage({imgPath, quality, dest })
+{
+    try{
+        const pngQuality = quality/100
+        const files = await imagemin([imgPath],{
+            destination: dest,
+            plugins: [
+                imageminMozjpeg({quality}),
+                imageminPngquant({
+                    quality: [pngQuality, pngQuality]
+                })
+            ]
+        })
+        console.log(files)
+        shell.openPath(dest)
+
+        mainWindow.webContents.send('image:done')
+    }catch(err){
+        console.log(err)
+    }
+}
 
 
 app.on('activate', () => {

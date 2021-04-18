@@ -5,12 +5,17 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "dev":"nodemon --exec electron ."
+    "dev": "nodemon --exec electron ."
   },
   "author": "Sujith Kumar Appikatla",
   "license": "MIT",
   "devDependencies": {
     "electron": "^12.0.4",
     "nodemon": "^2.0.7"
+  },
+  "dependencies": {
+    "imagemin": "^7.0.1",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-pngquant": "^9.0.2"
   }
 }
